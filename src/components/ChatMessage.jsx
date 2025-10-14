@@ -5,7 +5,7 @@ export default function ChatMessage({ message, sender }) {
     >
       {sender === "robot" && (
         <img
-          src="/src/assets/botchat.png"
+          src="https://github.com/HOLYKEYZ/My_ChatBot/blob/main/src/assets/botchat.png?raw=true"
           alt="bot"
           className="chat-message-profile"
         />
@@ -19,7 +19,7 @@ export default function ChatMessage({ message, sender }) {
       </div>
       {sender === "user" && (
         <img
-          src="/src/assets/chatbot.png"
+          src="https://github.com/HOLYKEYZ/My_ChatBot/blob/main/chatbot.png?raw=true"
           alt="you"
           className="chat-message-profile"
         />
