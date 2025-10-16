@@ -1,3 +1,6 @@
+import ReactMarkdown from 'react-markdown';
+
+
 export default function ChatMessage({ message, sender }) {
   return (
     <div
@@ -15,7 +18,7 @@ export default function ChatMessage({ message, sender }) {
         role="article"
         aria-label={`${sender} message`}
       >
-        {message}
+        <ReactMarkdown>{message}</ReactMarkdown>
       </div>
       {sender === "user" && (
         <img
