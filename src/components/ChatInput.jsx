@@ -1,28 +1,23 @@
 import { useState } from "react";
-import Groq from "groq-sdk";
 
 export default function ChatInput({ setChatMessages }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const groq = new Groq({
-    apiKey: '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',
-    dangerouslyAllowBrowser: true
-  });
-
   async function getAIResponse(userText) {
     try {
-      const response = await groq.chat.completions.create({
-        messages: [{ role: "user", content: userText }],
-        model: "llama-3.3-70b-versatile",
-        temperature: 1.1,
-        max_tokens: 200,
-        presence_penalty: 0,
-        frequency_penalty: 0.5
+      const response = await fetch('http://localhost:3001/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userText }),
       });
-      return response.choices[0]?.message?.content || "Sorry, I couldn't generate a response.";
+
+      const data = await response.json();
+      return data.response || "Sorry, I couldn't generate a response.";
     } catch (error) {
-      console.error("Groq API error:", error);
+      console.error("API error:", error);
       return "Something went wrong. Please try again.";
     }
   }
