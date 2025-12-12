@@ -6,7 +6,7 @@ export default function ChatInput({ setChatMessages }) {
 
   async function getAIResponse(userText) {
     try {
-      const response = await fetch("http://localhost:3001/api/chat", {
+      const response = await fetch('http://localhost:3001/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -15,12 +15,6 @@ export default function ChatInput({ setChatMessages }) {
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        const errorMessage = data?.error || `Server error (${response.status}).`;
-        return errorMessage;
-      }
-
       return data.response || "Sorry, I couldn't generate a response.";
     } catch (error) {
       console.error("API error:", error);
