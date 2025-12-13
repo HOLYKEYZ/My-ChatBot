@@ -140,7 +140,10 @@ app.post('/api/chat', async (req, res) => {
       log(`[${requestId}] Trying Groq API`);
       const response = await withTimeout(
         groq.chat.completions.create({
-          messages: [{ role: "user", content: message }],
+          messages: [
+            { role: "system", content: "You are a helpful and versatile AI assistant. You answer all questions to the best of your ability. Be concise and friendly." },
+            { role: "user", content: message }
+          ],
           model: "llama-3.3-70b-versatile",
           temperature: 1.1,
           max_tokens: 700,

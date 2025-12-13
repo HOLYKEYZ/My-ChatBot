@@ -103,16 +103,6 @@ export default function ChatInput({ setChatMessages }) {
       className="chat-input-container controls"
       role="group"
       aria-label="Chat input"
-      style={{
-        gap: 8,
-        display: "flex",
-        alignItems: "center",
-        marginTop: 12,
-        width: '100%',
-        maxWidth: '800px',
-        margin: '0 auto',
-        padding: '0 16px'
-      }}
     >
       <input
         className="chat-input"
@@ -122,37 +112,21 @@ export default function ChatInput({ setChatMessages }) {
         onKeyDown={(e) => {
           if (e.key === "Enter" && !loading) send();
         }}
-        placeholder={loading ? "Thinking..." : "Type a message"}
+        placeholder={loading ? "Thinking..." : "Type a message..."}
         disabled={loading}
-        style={{
-          flex: 1,
-          padding: '10px 16px',
-          borderRadius: '24px',
-          border: '1px solid #ddd',
-          fontSize: '16px',
-          outline: 'none',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-        }}
       />
       <button 
         type="button" 
         className="send" 
         onClick={send}
         disabled={loading}
-        style={{
-          padding: '10px 24px',
-          borderRadius: '24px',
-          border: 'none',
-          backgroundColor: loading ? '#ccc' : '#007bff',
-          color: 'white',
-          fontWeight: 'bold',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          transition: 'background-color 0.2s',
-          fontSize: '16px',
-          whiteSpace: 'nowrap'
-        }}
+        title="Send message"
       >
-        {loading ? (retryCount > 0 ? `Trying again (${retryCount + 1})` : '...') : 'Send'}
+        {loading ? (
+           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        ) : (
+           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        )}
       </button>
     </div>
   );

@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="app-container" role="application" aria-label="Chatbot app">
-      <h2 className="text">MY CHATBOT</h2>
+      <h2 className="text">AI Assistant</h2>
       <ChatMessagesList chatMessages={chatMessages} />
       <ChatInput
         chatMessages={chatMessages}
