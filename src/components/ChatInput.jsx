@@ -8,7 +8,7 @@ export default function ChatInput({ setChatMessages }) {
   const MAX_RETRIES = 2;
 
   const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:3001/api/chat' : '/api/chat');
-  const HEALTH_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:3001/health' : '/health');
+  const HEALTH_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:3001/api/health' : '/api/health');
 
   // Check backend connection on mount
   useEffect(() => {
@@ -16,7 +16,10 @@ export default function ChatInput({ setChatMessages }) {
       try {
         const res = await fetch(HEALTH_URL);
         if (res.ok) setIsBackendConnected(true);
-        else setIsBackendConnected(false);
+        else {
+          setIsBackendConnected(false);
+          console.warn(`Backend health check failed: ${res.status}`);
+        }
       } catch (e) {
         setIsBackendConnected(false);
         console.warn("Backend not reachable:", e);

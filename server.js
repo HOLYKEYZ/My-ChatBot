@@ -40,8 +40,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// Router setup
+const router = express.Router();
+
 // Health check endpoint
-app.get('/health', (req, res) => {
+router.get('/health', (req, res) => {
   res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -50,36 +53,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Initialize Groq client if API key is available
-let groq;
-if (process.env.GROQ_API_KEY) {
-  groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY,
-  });
-  log('Groq client initialized');
-} else {
-  log('Groq API key not found, Groq client not initialized');
-}
-
-const GEMINI_KEY = process.env.GEMINI_KEY;
-if (GEMINI_KEY) {
-  log('Gemini API key found, Gemini fallback is available');
-} else {
-  log('Gemini API key not found, Gemini fallback is disabled');
-}
-
-// Helper function to handle timeouts
-const withTimeout = (promise, ms, requestId) => {
-  const timeout = new Promise((_, reject) => {
-    const id = setTimeout(() => {
-      clearTimeout(id);
-      reject(new Error(`Request timed out after ${ms}ms`));
-    }, ms);
-  });
-  return Promise.race([promise, timeout]);
-};
-
-app.post('/api/chat', async (req, res) => {
+router.post('/chat', async (req, res) => {
   const { message } = req.body;
   const requestId = req.id;
 
@@ -111,14 +85,10 @@ app.post('/api/chat', async (req, res) => {
     const errorMessage = `[${requestId}] ${provider} error (${errorId}):`;
     
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
       error(`${errorMessage} ${error.response.status} - ${JSON.stringify(error.response.data)}`);
     } else if (error.request) {
-      // The request was made but no response was received
       error(`${errorMessage} No response received - ${error.message}`);
     } else {
-      // Something happened in setting up the request that triggered an Error
       error(`${errorMessage} ${error.message}`);
     }
 
@@ -193,6 +163,11 @@ app.post('/api/chat', async (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// Mount router
+app.use('/api', router);
+// Fallback for root access (useful for Vercel/local flexibility)
+app.use('/', router);
 
 // Export app for Vercel
 export default app;
