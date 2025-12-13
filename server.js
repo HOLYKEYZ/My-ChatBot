@@ -194,13 +194,20 @@ app.post('/api/chat', async (req, res) => {
   });
 });
 
-// Start the server
-app.listen(PORT, () => {
-  log(`Server running on http://localhost:${PORT}`);
-  log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-  log(`Groq: ${groq ? 'Enabled' : 'Disabled'}`);
-  log(`Gemini: ${GEMINI_KEY ? 'Enabled' : 'Disabled'}`);
-});
+// Export app for Vercel
+export default app;
+
+// Start the server only if not running on Vercel
+// Or if explicitly run via node
+const isVercel = process.env.VERCEL === '1';
+if (!isVercel) {
+  app.listen(PORT, () => {
+    log(`Server running on http://localhost:${PORT}`);
+    log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    log(`Groq: ${groq ? 'Enabled' : 'Disabled'}`);
+    log(`Gemini: ${GEMINI_KEY ? 'Enabled' : 'Disabled'}`);
+  });
+}
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {

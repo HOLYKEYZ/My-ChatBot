@@ -22,6 +22,8 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  /* Use dvh for mobile browsers */
+  min-height: 100dvh; 
 }
 
 .app-container {
@@ -216,8 +218,44 @@ body {
 }
 
 @media (max-width: 640px) {
+  body {
+    padding: 0;
+    align-items: flex-end; /* Stick to bottom */
+  }
+
   .app-container {
-    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
+    max-height: 100dvh;
     border-radius: 0;
+    min-height: auto;
+  }
+
+  .text {
+    padding: 16px 20px;
+  }
+  
+  .messages {
+    padding: 16px;
+    padding-bottom: 10px;
+  }
+  
+  .chat-message-user,
+  .chat-message-robot {
+    max-width: 90%; /* Wider messages on mobile */
+  }
+
+  .chat-input-container {
+    padding: 12px 16px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  
+  .chat-input {
+    padding: 12px 16px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .send {
+    width: 44px;
+    height: 44px;
   }
 }
